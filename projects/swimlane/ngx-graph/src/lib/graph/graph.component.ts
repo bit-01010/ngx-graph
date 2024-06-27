@@ -228,6 +228,8 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
     this.panTo(null, Number(y));
   }
 
+  private updateCount = 0;
+
   /**
    * Angular lifecycle event
    *
@@ -350,6 +352,7 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
       }
       this.initialized = true;
     });
+    this.updateCount++;
   }
 
   /**
@@ -384,6 +387,12 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
         if (this.deferDisplayUntilPosition) {
           n.hidden = true;
         }
+      }
+
+      if(this.updateCount == 0 && n.data?.data?.position){
+        const p = n.data?.data?.position;
+        console.log("setting up position for first time: ", p);
+        n.position = {x: p.x, y: p.y};
       }
 
       n.data = n.data ? n.data : {};
